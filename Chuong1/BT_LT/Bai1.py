@@ -31,19 +31,21 @@ c_entered.grid(column=2,row=2)
 # Click Event Handle Func
 def click_me():
     try:
-        # Kiểm tra nếu `a` và `b` là số
-        a_value = a.get()
-        b_value = b.get()
-
-       
-        if a_value != 0:
-            c.set(-b_value / a_value)
+    #    Cach 1
+        # a_value = a.get()
+        # b_value = b.get()
+        # if a_value != 0:
+        #     c.set(-b_value / a_value)
+        # else:
+        #     mbox.showerror("Error", "a must be different from 0")
+    #    Cach 2
+        if a.get() != 0:
+            c.set(-b.get() /a.get())
         else:
             mbox.showerror("Error", "a must be different from 0")
 
     # Lỗi này là do sai giá trị
     except tk.TclError:
-        
         mbox.showerror("Input Error", "Please enter valid numbers for a and b")
     
     # ktra những lỗi khác, này dư thừa nhưng để cho bt
