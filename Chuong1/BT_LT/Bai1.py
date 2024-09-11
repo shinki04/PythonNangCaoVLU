@@ -56,9 +56,7 @@ def click_me():
 
     # Lỗi này là do sai giá trị
     except tk.TclError:
-        mbox.showerror("Input Error", "Nhập số vào a và b")
-        mbox.showerror("Input Error", "Please enter valid numbers for a and b")
-    
+        mbox.showerror("Input Error", "Nhập số vào a và b")    
     # ktra những lỗi khác, này dư thừa nhưng để cho bt
     except :
         mbox.showerror("Something wrong", "Check again")
