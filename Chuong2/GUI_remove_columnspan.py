@@ -72,7 +72,7 @@ radVar=tk.IntVar()
 radVar.set(99)
 for col in range(3):
     curRad = tk.Radiobutton(win, text=colors[col], variable=radVar,  value=col , command=radCall)
-    curRad.grid(column=col, row=5, sticky=tk.W)
+    curRad.grid(column=col, row=6, sticky=tk.W)
 
 
 #* End Col 1
@@ -104,9 +104,10 @@ buttons_frame.grid(column=0, row=7)
 # buttons_frame.grid(column=0, row=7, padx=20, pady=40)  # padx, pady - giống padding
 # button_frame.grid(column=1, row=7)
 # Không stick trên win , stick trên frame
-ttk.Label(buttons_frame, text="Label1").grid(column=0, row=1)
-ttk.Label(buttons_frame, text="Label2").grid(column=0, row=2)
-ttk.Label(buttons_frame, text="Label3").grid(column=0, row=3)
+ttk.Label(buttons_frame, text="Label1").grid(column=0, row=0,  sticky=tk.W)
+ttk.Label(buttons_frame, text="Label2").grid(column=1, row=0,  sticky=tk.W)
+ttk.Label(buttons_frame, text="Label3").grid(column=2, row=0,  sticky=tk.W)
+
 
 for child in buttons_frame.winfo_children():  
     child.grid_configure(padx=8, pady=4)
@@ -115,7 +116,7 @@ for child in buttons_frame.winfo_children():
 scrol_w = 30
 scrol_h = 3
 scr = scrolledtext.ScrolledText(win, width=scrol_w, height=scrol_h, wrap=tk.WORD)
-scr.grid(column=0,row=6)
+scr.grid(column=0,row=5)
 
 # scr.grid(column=0, columnspan=3,row=6)
 # scrol_w = 30

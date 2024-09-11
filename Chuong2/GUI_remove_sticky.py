@@ -104,9 +104,10 @@ buttons_frame.grid(column=0, row=7)
 # buttons_frame.grid(column=0, row=7, padx=20, pady=40)  # padx, pady - giống padding
 # button_frame.grid(column=1, row=7)
 # Không stick trên win , stick trên frame
-ttk.Label(buttons_frame, text="Label1").grid(column=0, row=1)
-ttk.Label(buttons_frame, text="Label2").grid(column=0, row=2)
-ttk.Label(buttons_frame, text="Label3").grid(column=0, row=3)
+ttk.Label(buttons_frame, text="Label1").grid(column=0, row=0,  sticky=tk.W)
+ttk.Label(buttons_frame, text="Label2").grid(column=1, row=0,  sticky=tk.W)
+ttk.Label(buttons_frame, text="Label3").grid(column=2, row=0,  sticky=tk.W)
+
 
 for child in buttons_frame.winfo_children():  
     child.grid_configure(padx=8, pady=4)

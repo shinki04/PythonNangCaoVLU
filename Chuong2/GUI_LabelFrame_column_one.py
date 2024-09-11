@@ -20,7 +20,7 @@ name_entered.focus() #Nó tự focus con trỏ vào ô nhập
 scrol_w = 30
 scrol_h = 3
 scr = scrolledtext.ScrolledText(win, width=scrol_w, height=scrol_h, wrap=tk.WORD)
-scr.grid(column=0, columnspan=3,row=6)
+scr.grid(column=0, columnspan=3,row=5)
 #* https://stackoverflow.com/questions/50158866/what-is-the-difference-between-column-and-columnspan-in-tkinter-python
 
 
@@ -81,7 +81,7 @@ radVar=tk.IntVar()
 radVar.set(99)
 for col in range(3):
     curRad = tk.Radiobutton(win, text=colors[col], variable=radVar,  value=col , command=radCall)
-    curRad.grid(column=col, row=5, sticky=tk.W)
+    curRad.grid(column=col, row=6, sticky=tk.W)
 
 
 #* End Col 1
@@ -106,8 +106,8 @@ action.grid(column=2, row=1)
 #=======================================================================================================================#
 
 buttons_frame = ttk.LabelFrame(win,text=   'Labels in a Frame')  
-buttons_frame.grid(column=0, row=7)
-# button_frame.grid(column=1, row=7)
+# buttons_frame.grid(column=0, row=7)
+buttons_frame.grid(column=1, row=7)
 ttk.Label(buttons_frame, text="Label1").grid(column=0, row=0,  sticky=tk.W)
 ttk.Label(buttons_frame, text="Label2").grid(column=1, row=0,  sticky=tk.W)
 ttk.Label(buttons_frame, text="Label3").grid(column=2, row=0,  sticky=tk.W)
