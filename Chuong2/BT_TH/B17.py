@@ -1,25 +1,48 @@
-import tkinter as tk
+import tkinter as tk  
 from tkinter import ttk
-from tkinter import scrolledtext
+from tkinter import scrolledtext  
+from tkinter import Menu
+
 
 win = tk.Tk()
 win.title("Python GUI")
+win.configure(background="BLUE")
+
+# Creating a Menu Bar  
+menu_bar = Menu(win)  
+win.config(menu=menu_bar)
+
+# Create menu and add menu items
+file_menu = Menu(menu_bar, tearoff=0) # create File menu  , mất cái - - - 
+file_menu.add_command(label="New") # add File menu item
+file_menu.add_separator()
+
+file_menu.add_command(label="Exit")
+menu_bar.add_cascade(label="File", menu=file_menu) # add File menu  to menu bar and give it a label
+
+
+
+mighty = ttk.LabelFrame(win, text=' Mighty Python')  
+mighty.grid(column=0, row=0, padx=8, pady=4)
+
+
 #=======================================================================================================================#
 
 #* Start Col 0
 
-a_label = ttk.Label(win,text="A Label")
-a_label.grid(column=0,row=0)
+a_label = ttk.Label(mighty, text="Enter a name:")  
+a_label.grid(column=0, row=0, sticky='W')
+
 name = tk.StringVar()
-name_entered = ttk.Entry(win, width=12, textvariable=name)
-name_entered.grid(column=0, row=1)
+name_entered = ttk.Entry(mighty, width=12, textvariable=name)
+name_entered.grid(column=0, row=1 , sticky="W")
 name_entered.focus() #Nó tự focus con trỏ vào ô nhập
 
 
 
 scrol_w = 30
 scrol_h = 3
-scr = scrolledtext.ScrolledText(win, width=scrol_w, height=scrol_h, wrap=tk.WORD)
+scr = scrolledtext.ScrolledText(mighty, width=scrol_w, height=scrol_h, wrap=tk.WORD)
 scr.grid(column=0, columnspan=3,row=6)
 #* https://stackoverflow.com/questions/50158866/what-is-the-difference-between-column-and-columnspan-in-tkinter-python
 
@@ -30,25 +53,25 @@ scr.grid(column=0, columnspan=3,row=6)
 
 #* Start Col 1
 
-ttk.Label(win, text="Choose a number:").grid(column=1, row=0)
+ttk.Label(mighty, text="Choose a number:").grid(column=1, row=0)
 number = tk.StringVar()
-number_chosen = ttk.Combobox(win, width=12, textvariable=number,  state='readonly')
+number_chosen = ttk.Combobox(mighty, width=12, textvariable=number,  state='readonly')
 number_chosen['value'] = (1,2,4,42,100)
 number_chosen.grid(column=1,row=1)
 number_chosen.current(0)
 #Create 3 checkbuttons
 chVarDis = tk.IntVar()  
-check1 = tk.Checkbutton(win,width=12,text="Disabled" ,variable=chVarDis,state='disabled')
+check1 = tk.Checkbutton(mighty,width=12,text="Disabled" ,variable=chVarDis,state='disabled')
 check1.select()  
 check1.grid(column=0, row=4, sticky=tk.W)  
 
 chVarUn = tk.IntVar()  
-check2 = tk.Checkbutton(win,width=12,text="UnChecked" ,variable=chVarUn)
+check2 = tk.Checkbutton(mighty,width=12,text="UnChecked" ,variable=chVarUn)
 check2.deselect()  
 check2.grid(column=1, row=4, sticky=tk.W)  
 
 chVarEn = tk.IntVar()
-check3 = tk.Checkbutton(win,width=12,text="Enabled" ,variable=chVarEn)
+check3 = tk.Checkbutton(mighty,width=12,text="Enabled" ,variable=chVarEn)
 
 text="Enabled"
 check3.select()
@@ -61,11 +84,11 @@ colors = ["Blue", "Gold", "Red"]
 def radCall():
     radSel = radVar.get()
     if radSel == 0:
-        win.configure(background=colors[0])
+        mighty.configure(background=colors[0])
     elif radSel == 1:
-        win.configure(background=colors[1])
+        mighty.configure(background=colors[1])
     elif radSel == 2: 
-        win.configure(background=colors[2])
+        mighty.configure(background=colors[2])
 
 
     
@@ -80,7 +103,7 @@ radVar=tk.IntVar()
 
 radVar.set(99)
 for col in range(3):
-    curRad = tk.Radiobutton(win, text=colors[col], variable=radVar,  value=col , command=radCall)
+    curRad = tk.Radiobutton(mighty, text=colors[col], variable=radVar,  value=col , command=radCall)
     curRad.grid(column=col, row=5, sticky=tk.W)
 
 
@@ -97,27 +120,27 @@ def click_me():
     a_label.configure(text='A Red Label')
 
 # Adding a button
-action = ttk.Button(win, text="Click Me!", command=click_me)  
+action = ttk.Button(mighty, text="Click Me!", command=click_me)  
 action.grid(column=2, row=1)
 #* End Col 2
 
 
 
 #=======================================================================================================================#
-
-buttons_frame = ttk.LabelFrame(win, text='')  
+# s = ttk.Style()
+# s.configure('User.TLabelframe', bordercolor='red')
+# s.configure('User.TLabelframe.Label', foreground='blue')
+# labelframe = ttk.Labelframe(master, text='Options', style='User.TLabelframe')
+buttons_frame = ttk.LabelFrame(mighty, text=' Labels in a Frame' )  
 buttons_frame.grid(column=0, row=7)
 
-
-# buttons_frame = ttk.LabelFrame(win, text='')	
-# buttons_frame.grid(column=0, row=7, padx=20, pady=40)  # padx, pady - giống padding
 # button_frame.grid(column=1, row=7)
-# Không stick trên win , stick trên frame
-ttk.Label(buttons_frame, text="Label1").grid(column=0, row=1)
-ttk.Label(buttons_frame, text="Label2").grid(column=0, row=2)
-ttk.Label(buttons_frame, text="Label3").grid(column=0, row=3)
+ttk.Label(buttons_frame, text="Label1").grid(column=0, row=0,  sticky=tk.W)
+ttk.Label(buttons_frame, text="Label2").grid(column=1, row=0,  sticky=tk.W)
+ttk.Label(buttons_frame, text="Label3").grid(column=2, row=0,  sticky=tk.W)
 
-for child in buttons_frame.winfo_children():  
-    child.grid_configure(padx=8, pady=4)
+
+
 
 win.mainloop()
+

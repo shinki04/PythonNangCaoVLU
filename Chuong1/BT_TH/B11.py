@@ -5,8 +5,10 @@ from tkinter import scrolledtext
 win = tk.Tk()
 scrol_w = 30
 scrol_h = 3
-scr = scrolledtext.ScrolledText(win, width=scrol_w, height=scrol_h, wrap=tk.WORD)
-scr.grid(column=0, columnspan=3,row=6)
+# scr = scrolledtext.ScrolledText(win, width=scrol_w, height=scrol_h, wrap=tk.WORD)
+# scr.grid(column=0, columnspan=3,row=6)
+scrolledtext.ScrolledText(win, width=30, height=3, wrap=tk.WORD).grid(column=0, columnspan=3,row=6)
+
 #* https://stackoverflow.com/questions/50158866/what-is-the-difference-between-column-and-columnspan-in-tkinter-python
 
 #=======================================================================================================================#

@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-win = tk.Tk()
+from tkinter import scrolledtext
 
+win = tk.Tk()
+win.title("Python GUI")
 #=======================================================================================================================#
 
 #* Start Col 0
@@ -13,6 +15,13 @@ name_entered = ttk.Entry(win, width=12, textvariable=name)
 name_entered.grid(column=0, row=1)
 name_entered.focus() #Nó tự focus con trỏ vào ô nhập
 
+
+
+scrol_w = 30
+scrol_h = 3
+scr = scrolledtext.ScrolledText(win, width=scrol_w, height=scrol_h, wrap=tk.WORD)
+scr.grid(column=0, columnspan=3,row=6)
+#* https://stackoverflow.com/questions/50158866/what-is-the-difference-between-column-and-columnspan-in-tkinter-python
 
 
 #* End Col 0
@@ -46,31 +55,6 @@ check3.select()
 check3.grid(column=2, row=4, sticky=tk.W)
 
 
-
-# COLOR1 = "Blue"  
-# COLOR2 = "Gold"  
-# COLOR3 = "Red"
-# def radCall():
-#     radSel = radVar.get()
-#     if radSel == 1: 
-#         win.configure(background=COLOR1)
-#     elif radSel == 2:  
-#         win.configure(background=COLOR2)  
-#     elif radSel == 3: 
-#         win.configure(background=COLOR3)
-
-    
-    
-# radVar=tk.IntVar()
-# rad1 = tk.Radiobutton(win,text=COLOR1,variable=radVar,value=1,command=radCall)
-# rad1.grid(column=0,row=5 ,sticky=tk.W,columnspan=3)
-# rad2 = tk.Radiobutton(win,text=COLOR2,variable=radVar,value=2,command=radCall)
-# rad2.grid(column=1,row=5 ,sticky=tk.W,columnspan=3)
-# rad3 = tk.Radiobutton(win,text=COLOR3,variable=radVar,value=3,command=radCall)
-# rad3.grid(column=2,row=5 ,sticky=tk.W,columnspan=3)
-
-
-
 colors = ["Blue", "Gold", "Red"]
 
 
@@ -87,6 +71,12 @@ def radCall():
     
     
 radVar=tk.IntVar()
+# rad1 = tk.Radiobutton(win,text=COLOR1,variable=radVar,value=1,command=radCall)
+# rad1.grid(column=0,row=5 ,sticky=tk.W,columnspan=3)
+# rad2 = tk.Radiobutton(win,text=COLOR2,variable=radVar,value=2,command=radCall)
+# rad2.grid(column=1,row=5 ,sticky=tk.W,columnspan=3)
+# rad3 = tk.Radiobutton(win,text=COLOR3,variable=radVar,value=3,command=radCall)
+# rad3.grid(column=2,row=5 ,sticky=tk.W,columnspan=3)
 
 radVar.set(99)
 for col in range(3):
@@ -114,5 +104,13 @@ action.grid(column=2, row=1)
 
 
 #=======================================================================================================================#
+
+buttons_frame = ttk.LabelFrame(win,text=   'Labels in a Frame')  
+buttons_frame.grid(column=0, row=7)  # padx, pady - giống padding
+# button_frame.grid(column=1, row=7)
+ttk.Label(buttons_frame, text="Label1").grid(column=0, row=0,  sticky=tk.W)
+ttk.Label(buttons_frame, text="Label2").grid(column=1, row=0,  sticky=tk.W)
+ttk.Label(buttons_frame, text="Label3").grid(column=2, row=0,  sticky=tk.W)
+
 
 win.mainloop()

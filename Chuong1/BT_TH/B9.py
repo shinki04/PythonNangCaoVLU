@@ -27,6 +27,8 @@ number_chosen = ttk.Combobox(win, width=12, textvariable=number,  state='readonl
 number_chosen['value'] = (1,2,4,42,100)
 number_chosen.grid(column=1,row=1)
 number_chosen.current(0)
+
+
 #Create 3 checkbuttons
 chVarDis = tk.IntVar()  
 check1 = tk.Checkbutton(win,width=12,text="Disabled" ,variable=chVarDis,state='disabled')
