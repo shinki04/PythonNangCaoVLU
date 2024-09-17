@@ -21,5 +21,7 @@ https://github.com/PacktPublishing/Python-GUI-Programming-Cookbook-Third-Edition
 - Chuong 5 là chap7 trong giáo trình chính , có 1 số ở chap 5 6 7 của giáo trình chính mình không làm và chưa hề đề cập, tạm thời Chuong5 sẽ freeze
 
 ## Copyright by HieuDepTrai base on PythonGUI
-[![Copyright by HieuDepTrai base on PythonGUI](/Chuong4/pyc.ico "Copyright by HieuDepTrai base on PythonGUI.")]
+![Copyright by HieuDepTrai base on PythonGUI](/Chuong4/pyc.ico "Copyright by HieuDepTrai base on PythonGUI.")
+<!-- <img src="/Chuong4/pyc.ico" alt="Copyright by HieuDepTrai base on PythonGUI." title="Copyright by HieuDepTrai base on PythonGUI." /> -->
+
 
