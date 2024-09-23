@@ -6,7 +6,7 @@ win = tk.Tk()
 
 #* Start Col 0
 
-a_label = ttk.Label(win,text="A Label")
+a_label = ttk.Label(win,text="Enter a name")
 a_label.grid(column=0,row=0)
 name = tk.StringVar()
 name_entered = ttk.Entry(win, width=12, textvariable=name)
@@ -57,9 +57,7 @@ check3.grid(column=2, row=4, sticky=tk.W)
 
 def click_me():
     action.configure(text='Hello ' + name.get() + ' ' +  number_chosen.get())
-    a_label.configure(foreground='red')
-    a_label.configure(text='A Red Label')
-
+    
 # Adding a button
 action = ttk.Button(win, text="Click Me!", command=click_me)  
 action.grid(column=2, row=1)

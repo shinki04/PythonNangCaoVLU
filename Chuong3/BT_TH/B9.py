@@ -49,13 +49,20 @@ if __name__ == "__main__":
     tab1 = ttk.Frame(tabControl)  # Create a tab
 
     tab2 = ttk.Frame(tabControl)
+    tab3 = ttk.Frame(tabControl)  
+    
+
+
     # Add a second tab
     # * Thêm tab phải theo thứ tự 1 2 3 , chứ không nó loạn
     tabControl.add(tab1, text='Tab 1')  # Add the tab
 
     tabControl.add(tab2, text='Tab 2')
+    tabControl.add(tab3, text='Tab 3')
 
     tabControl.pack(expand=1, fill='both')  # Pack to make visible
+    
+    
 
 
     # Add another label
@@ -88,8 +95,6 @@ if __name__ == "__main__":
     number_chosen['value'] = (1, 2, 4, 42, 100)
     number_chosen.grid(column=1, row=1)
     number_chosen.current(0)
-    ToolTip(number_chosen, 'This is a Combobox widget')
-
 
 
     def click_me():
@@ -99,8 +104,6 @@ if __name__ == "__main__":
     # Adding a button
     action = ttk.Button(mighty, text="Click Me!", command=click_me)
     action.grid(column=2, row=1)
-    ToolTip(action, 'This is a Button widget')
-
 
     # scrol = scrolledtext.ScrolledText(mighty, width=30, height=3, wrap=tk.WORD)
     # scrol.grid(column=0, columnspan=3, row=6)
@@ -195,6 +198,14 @@ if __name__ == "__main__":
     ttk.Label(buttons_frame, text="Label1").grid(column=0, row=0,  sticky=tk.W)
     ttk.Label(buttons_frame, text="Label2").grid(column=1, row=0,  sticky=tk.W)
     ttk.Label(buttons_frame, text="Label3").grid(column=2, row=0,  sticky=tk.W)
+
+
+
+    tab3_frame = tk.Frame(tab3, bg='blue')  
+    tab3_frame.pack()
+    for orange_color in range(2):
+        canvas = tk.Canvas(tab3_frame, width=150, height=80,  highlightthickness=0, bg='orange')
+        canvas.grid(row=orange_color, column=orange_color)
 
 
     win.mainloop()

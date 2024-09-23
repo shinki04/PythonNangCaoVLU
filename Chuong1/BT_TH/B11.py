@@ -7,7 +7,10 @@ scrol_w = 30
 scrol_h = 3
 # scr = scrolledtext.ScrolledText(win, width=scrol_w, height=scrol_h, wrap=tk.WORD)
 # scr.grid(column=0, columnspan=3,row=6)
-scrolledtext.ScrolledText(win, width=30, height=3, wrap=tk.WORD).grid(column=0, columnspan=3,row=6)
+scrl = scrolledtext.ScrolledText(win, width=30, height=3, wrap=tk.WORD)
+scrl.grid(column=0, columnspan=3,row=6)
+
+
 
 #* https://stackoverflow.com/questions/50158866/what-is-the-difference-between-column-and-columnspan-in-tkinter-python
 
@@ -15,7 +18,7 @@ scrolledtext.ScrolledText(win, width=30, height=3, wrap=tk.WORD).grid(column=0, 
 
 #* Start Col 0
 
-a_label = ttk.Label(win,text="A Label")
+a_label = ttk.Label(win,text="Enter a name")
 a_label.grid(column=0,row=0)
 name = tk.StringVar()
 name_entered = ttk.Entry(win, width=12, textvariable=name)
@@ -86,8 +89,7 @@ rad3.grid(column=2,row=5 ,sticky=tk.W,columnspan=3)
 
 def click_me():
     action.configure(text='Hello ' + name.get() + ' ' +  number_chosen.get())
-    a_label.configure(foreground='red')
-    a_label.configure(text='A Red Label')
+
 
 # Adding a button
 action = ttk.Button(win, text="Click Me!", command=click_me)  
