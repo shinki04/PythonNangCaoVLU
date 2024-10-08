@@ -71,8 +71,9 @@ class OOP():
     # Spinbox callback
     def _spin(self):
         value = self.spin.get()
-        print(value)
         self.scrol.insert(tk.INSERT, value + '\n')
+        print("Spinbox value: " + value)
+
 
     # GUI Callback
     # def checkCallback(self, *ignored_args):
@@ -279,7 +280,7 @@ class OOP():
         print("Spinbox value: " + strData)
 
         # call function
-        self.usingGlobal()
+        # self.usingGlobal()
 
         name_entered.focus()
 

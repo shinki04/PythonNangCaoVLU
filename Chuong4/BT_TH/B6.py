@@ -10,7 +10,7 @@ from tkinter import messagebox as msg
 from tkinter import Spinbox
 from time import sleep         # careful - this can freeze the GUI
 
-GLOBAL_CONST = 42
+# GLOBAL_CONST = 42
 
 
 # ===================================================================
@@ -279,7 +279,7 @@ class OOP():
         print("Spinbox value: " + strData)
 
         # call function
-        self.usingGlobal()
+        # self.usingGlobal()
 
         name_entered.focus()
 

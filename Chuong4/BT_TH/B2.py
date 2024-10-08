@@ -8,7 +8,7 @@ win = tk.Tk()
 win.title("Python GUI")
 
 
-win.iconbitmap('Chuong3\pyc.ico')
+# win.iconbitmap('Chuong3\pyc.ico')
 
 # Create tabControl using the ttk Notebook:
 tabControl = ttk.Notebook(win)
@@ -78,7 +78,7 @@ Phương thức .grid() (cũng như .pack() hay .place()) không trả về giá
 # Spinbox callback
 def _spin():
     value = spin.get()
-    print(value)
+    # print(value)
     scrol.insert(tk.INSERT, value + '\n')
     strData = spin.get()  
     print("Spinbox value: " + strData)
