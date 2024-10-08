@@ -11,8 +11,13 @@ cursor = conn.cursor()
 
 cursor.execute("SHOW DATABASES")  
 # fetchall kiểu lấy theo hàng , all là hết , many thì nhập size vào 
-print(cursor.fetchall())
+# print(cursor.fetchall())
+
+for i in cursor.fetchall():
+    print(i)
     
 # Này phải là table cụ thể
 # print(cursor.fetchmany(size=4))
+
+# cursor.execute("Insert into ")
 conn.close()

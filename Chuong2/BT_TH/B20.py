@@ -15,6 +15,7 @@ file_menu.add_command(label="New") # add File menu item
 file_menu.add_separator()
 
 file_menu.add_command(label="Exit",command=win.quit) #Ấn thoát chương trình
+
 menu_bar.add_cascade(label="File", menu=file_menu) # add File menu  to menu bar and give it a label
 
 help_menu = Menu(menu_bar,tearoff=0)

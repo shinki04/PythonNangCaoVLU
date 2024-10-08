@@ -231,8 +231,8 @@ for child in mighty2.winfo_children():
     child.grid_configure(padx=8, pady=2)
 
 
-GLOBAL_CONST = 42  # ...
-print(GLOBAL_CONST)
+# GLOBAL_CONST = 42  # ...
+# print(GLOBAL_CONST)
 
 
 win.mainloop()

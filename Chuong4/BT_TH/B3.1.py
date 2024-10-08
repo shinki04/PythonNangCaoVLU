@@ -8,7 +8,7 @@ win = tk.Tk()
 win.title("Python GUI")
 
 
-win.iconbitmap('Chuong3\pyc.ico')
+# win.iconbitmap('Chuong3\pyc.ico')
 
 # Create tabControl using the ttk Notebook:
 tabControl = ttk.Notebook(win)
@@ -231,7 +231,7 @@ for child in mighty2.winfo_children():
     child.grid_configure(padx=8, pady=2)
 
 
-GLOBAL_CONST = 42  # ...
+GLOBAL_CONST = 23082004  # ...
 print(GLOBAL_CONST)
 
 
