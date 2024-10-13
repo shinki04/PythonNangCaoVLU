@@ -21,12 +21,9 @@ class MySQL():
             host=host
         )
 
-    
         # create cursor 
-        cursor = conn.cursor()    
-            
+        cursor = conn.cursor()            
         return conn, cursor
-    
     #------------------------------------------------------    
     def close(self, cursor, conn):        
         # close cursor

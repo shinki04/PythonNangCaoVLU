@@ -68,66 +68,77 @@ action.grid(column=0, row=4, columnspan=3,pady=3)
 # # Hàm chuyển đổi
 
 def convert():
-    input_value = float(entry.get())
-    from_unit = from_combo.get()
-    to_unit = to_combo.get()
+    try:
+        input_value = float(entry.get())
+        from_unit = from_combo.get()
+        to_unit = to_combo.get()
 
-#     # Chuyển đổi từ km
-#     if from_unit == 'Kilometers (km)':
-#         if to_unit == 'Centimeters (cm)':
-#             result = input_value * 100000
-#         elif to_unit == 'Millimeters (mm)':
-#             result = input_value * 1000000
-#         else:
-#             result = input_value
+    #     # Chuyển đổi từ km
+    #     if from_unit == 'Kilometers (km)':
+    #         if to_unit == 'Centimeters (cm)':
+    #             result = input_value * 100000
+    #         elif to_unit == 'Millimeters (mm)':
+    #             result = input_value * 1000000
+    #         else:
+    #             result = input_value
 
-#     # Chuyển đổi từ cm
-#     elif from_unit == 'Centimeters (cm)':
-#         if to_unit == 'Kilometers (km)':
-#             result = input_value / 100000
-#         elif to_unit == 'Millimeters (mm)':
-#             result = input_value * 10
-#         else:
-#             result = input_value
-#     # Chuyển đổi từ mm
-#     elif from_unit == 'Millimeters (mm)':
-#         if to_unit == 'Kilometers (km)':
-#             result = input_value / 1000000
-#         elif to_unit == 'Centimeters (cm)':
-#             result = input_value / 10
-#         else:
-#             result = input_value
-    # Hệ số chuyển đổi giữa các đơn vị
-    conversion_factors = {
-        'Kilometers (km)':
-            {
-                'Kilometers (km)': 1,
-                'Centimeters (cm)': 100000,
-                'Millimeters (mm)': 1000000
-            },
-        'Centimeters (cm)': 
-            {
-                'Kilometers (km)': 1/100000, 
-                'Centimeters (cm)': 1, 
-                'Millimeters (mm)': 10},
-        'Millimeters (mm)': 
-            {
-                'Kilometers (km)': 1/1000000, 
-                'Centimeters (cm)': 1/10, 
-                'Millimeters (mm)': 1
-            }
-    }
+    #     # Chuyển đổi từ cm
+    #     elif from_unit == 'Centimeters (cm)':
+    #         if to_unit == 'Kilometers (km)':
+    #             result = input_value / 100000
+    #         elif to_unit == 'Millimeters (mm)':
+    #             result = input_value * 10
+    #         else:
+    #             result = input_value
+    #     # Chuyển đổi từ mm
+    #     elif from_unit == 'Millimeters (mm)':
+    #         if to_unit == 'Kilometers (km)':
+    #             result = input_value / 1000000
+    #         elif to_unit == 'Centimeters (cm)':
+    #             result = input_value / 10
+    #         else:
+    #             result = input_value
+        # Hệ số chuyển đổi giữa các đơn vị
+        conversion_factors = {
+            'Kilometers (km)':
+                {
+                    'Kilometers (km)': 1,
+                    'Centimeters (cm)': 100000,
+                    'Millimeters (mm)': 1000000
+                },
+            'Centimeters (cm)': 
+                {
+                    'Kilometers (km)': 1/100000, 
+                    'Centimeters (cm)': 1, 
+                    'Millimeters (mm)': 10},
+            'Millimeters (mm)': 
+                {
+                    'Kilometers (km)': 1/1000000, 
+                    'Centimeters (cm)': 1/10, 
+                    'Millimeters (mm)': 1
+                }
+        }
 
-    # Tính kết quả dựa trên hệ số chuyển đổi
-    result = input_value * conversion_factors[from_unit][to_unit]
+        # Tính kết quả dựa trên hệ số chuyển đổi
+        result = input_value * conversion_factors[from_unit][to_unit]
 
-    # Hiển thị kết quả
-#     .rstrip('0'): Xóa các số 0 ở cuối.
-#     .rstrip('.'): Xóa dấu chấm nếu không có phần thập phân nào sau dấu chấm.
-    # result_label.grid(row=5, column=0, columnspan=2, pady=10, sticky="N")
-    # result_label.config(text=f"Result: {format(
-    #     result, '.10f').rstrip('0').rstrip('.')} {to_unit}")
-    re.set(format(result, '.10f').rstrip('0').rstrip('.'))
+        # Hiển thị kết quả
+    #     .rstrip('0'): Xóa các số 0 ở cuối.
+    #     .rstrip('.'): Xóa dấu chấm nếu không có phần thập phân nào sau dấu chấm.
+        # result_label.grid(row=5, column=0, columnspan=2, pady=10, sticky="N")
+        # result_label.config(text=f"Result: {format(
+        #     result, '.10f').rstrip('0').rstrip('.')} {to_unit}")
+        re.set(format(result, '.10f').rstrip('0').rstrip('.'))
+     # Lỗi này là do sai giá trị
+    except tk.TclError:
+        mbox.showerror("Input Error", "Nhập số vào a và b")
+    # ktra những lỗi khác, này dư thừa nhưng để cho bt
+    except ValueError:
+        # Hiển thị thông báo lỗi nếu người dùng nhập không phải là số
+        mbox.showerror("Lỗi nhập liệu", "Nhập số")
+    except:
+        mbox.showerror("Something wrong", "Check again")
+
 
 
 # Tiêu đề
