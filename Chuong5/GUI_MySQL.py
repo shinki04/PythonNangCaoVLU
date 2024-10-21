@@ -11,7 +11,7 @@ from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter import Menu
 from tkinter import Spinbox
-from Chuong5.ToolTip import ToolTip
+from ToolTip import ToolTip
 from threading import Thread
 from time import sleep
 from queue import Queue

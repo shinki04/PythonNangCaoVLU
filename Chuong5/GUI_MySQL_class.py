@@ -1,9 +1,3 @@
-'''
-Created on May 29, 2019
-Ch07
-@author: Burkhard
-'''
-
 
 import mysql.connector
 import GuiDBConfig as guiConf 
@@ -340,7 +334,6 @@ class MySQL():
             cursor.execute("SELECT Book_ID FROM books WHERE Book_Title = 'Design Patterns'")
             primKey = cursor.fetchall()[0][0]
             # print(primKey)
-            
             cursor.execute("DELETE FROM books WHERE Book_ID = (%s)", (primKey,))
     
             # commit transaction
@@ -353,76 +346,76 @@ class MySQL():
         
                                            
 #==========================================================
-if __name__ == '__main__': 
-    mySQL = MySQL()                 # Create class instance
-                                    # UNCOMMENT the following code in sequences
-    try:
+
+# if __name__ == '__main__': 
+#     mySQL = MySQL()                 # Create class instance
+#                                     # UNCOMMENT the following code in sequences
+#     try:
+# #         #------------------------
+# #         mySQL.showTables()
+# #         mySQL.dropTables()
+# #         mySQL.createTables()
+# #         mySQL.showTables()
+# #          
+# #         #------------------------
+# #         mySQL.showDBs()
+# #         mySQL.createGuiDB()
+# #         mySQL.showDBs()
+          
 #         #------------------------
-#         mySQL.showTables()
-#         mySQL.dropTables()
+# #         mySQL.dropGuiDB()
+# #         mySQL.showDBs()
+         
+#         #------------------------
+# #         mySQL.createGuiDB()
+# #         mySQL.dropTables()
 #         mySQL.createTables()
 #         mySQL.showTables()
-#          
-#         #------------------------
-#         mySQL.showDBs()
-#         mySQL.createGuiDB()
-#         mySQL.showDBs()
           
-        #------------------------
-#         mySQL.dropGuiDB()
-#         mySQL.showDBs()
-         
-        #------------------------
-#         mySQL.createGuiDB()
-#         mySQL.dropTables()
-        mySQL.createTables()
-        mySQL.showTables()
-          
-        #------------------------
-        mySQL.showBooks()
-         
-        #------------------------
-        mySQL.showColumns()
-         
-        #------------------------
-        mySQL.insertBooksExample()
-         
-        #------------------------
-        mySQL.insertBooks('Design Patterns', 7, 'Programming to an Interface, not an Implementation')
-        mySQL.insertBooks('xUnit Test Patterns', 31, 'Philosophy of Test Automation')
-        mySQL.showData()
-           
-        #------------------------
-#         mySQL.showData()
-#          
 #         #------------------------
-#         mySQL.updateGOF()
-#          
+#         mySQL.showBooks()
+         
 #         #------------------------
-#         mySQL.updateGOF_commit()
-#          
+#         mySQL.showColumns()
+         
 #         #------------------------
-#         book, quote = mySQL.showData()  
-#         book, quote = mySQL.showDataWithReturn()
-#         print(book, quote)
-     
-        #------------------------
-#         mySQL.dropTables()
-#         mySQL.createTablesNoFK()
-#         mySQL.showTables()
-#          
+#         mySQL.insertBooksExample()
+         
+#         #------------------------
 #         mySQL.insertBooks('Design Patterns', 7, 'Programming to an Interface, not an Implementation')
 #         mySQL.insertBooks('xUnit Test Patterns', 31, 'Philosophy of Test Automation')
-#         mySQL.showData()    
+#         mySQL.showData()
+           
+#         #------------------------
+# #         mySQL.showData()
+# #          
+# #         #------------------------
+# #         mySQL.updateGOF()
+# #          
+# #         #------------------------
+# #         mySQL.updateGOF_commit()
+# #          
+# #         #------------------------
+# #         book, quote = mySQL.showData()  
+# #         book, quote = mySQL.showDataWithReturn()
+# #         print(book, quote)
      
 #         #------------------------
-#         mySQL.deleteRecord()
-#         
-#         #------------------------
-#         mySQL.deleteRecord()    
-#         mySQL.showData()
+# #         mySQL.dropTables()
+# #         mySQL.createTablesNoFK()
+# #         mySQL.showTables()
+# #          
+# #         mySQL.insertBooks('Design Patterns', 7, 'Programming to an Interface, not an Implementation')
+# #         mySQL.insertBooks('xUnit Test Patterns', 31, 'Philosophy of Test Automation')
+# #         mySQL.showData()    
+     
+# #         #------------------------
+# #         mySQL.deleteRecord()
+# #         
+# #         #------------------------
+# #         mySQL.deleteRecord()    
+# #         mySQL.showData()
 
-    except Exception as ex:
-        print(ex)
-    
+#     except Exception as ex:
+#         print(ex)
     
