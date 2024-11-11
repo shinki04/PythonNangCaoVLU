@@ -14,7 +14,10 @@ class TaskManager:
         self.root = root
         self.root.title("Task Manager")
         self.root.iconbitmap('DoAn/logo.ico')
-        
+
+        # Flag to track changes
+        self.changed = False  # To track if any task's status has been changed
+
         # File menu
         self.menu_bar = Menu(self.root)
         file_menu = Menu(self.menu_bar, tearoff=0)
@@ -34,12 +37,13 @@ class TaskManager:
         self.calendar.pack(expand=True)
         self.calendar.bind("<<CalendarSelected>>", self.calendar_date_changed)
 
-        task_list = ttk.LabelFrame(self.root)
+        task_list = ttk.LabelFrame(self.root,height=60)
         task_list.grid(column=3, row=0, padx=50 ,pady=20)
 
         # Task Entry and Buttons
         Label(task_list, text="Task:").grid(row=1, column=0,padx=20 , pady=20)
-        self.task_entry = Entry(task_list)
+        self.task = tk.StringVar()
+        self.task_entry = Entry(task_list, textvariable=self.task)
         self.task_entry.grid(row=1, column=1)
 
         self.add_button = Button(task_list, text="Add Task", command=self.add_new_task)
@@ -51,7 +55,6 @@ class TaskManager:
         # Task List (using Checkbuttons)
         self.task_frame = ttk.LabelFrame(task_list)
         self.task_frame.grid(row=3, column=0, columnspan=3 , padx=20 , pady=20)
-        self.checkbuttons = []  # Khởi tạo self.checkbuttons tại đây
 
         # Initialize selected date and populate tasks
         self.connect_db()
@@ -91,11 +94,22 @@ class TaskManager:
             checkbutton.grid(sticky="w")
             self.checkbuttons.append((checkbutton, var, task_id))  # Store the id for future reference
 
+            # Bind the checkbutton to the tracking function to detect changes
+            var.trace("w", lambda *args, task_id=task_id: self.on_checkbox_change(task_id))
+
+    def on_checkbox_change(self, task_id):
+        self.changed = True  # Mark that a change has occurred
+
     def save_changes(self):
         try:
+            if not self.changed:
+                messagebox.showinfo("No Changes", "No changes to save.")
+                return
+
             date_selected = self.calendar.get_date()
 
-            for checkbutton, var, task_id in self.checkbuttons:
+            for i in range(len(self.checkbuttons)):
+                checkbutton, var, task_id = self.checkbuttons[i]
                 completed = 'YES' if var.get() == 1 else 'NO'
 
                 # Update the completion status based on `id`
@@ -103,6 +117,7 @@ class TaskManager:
                 self.cursor.execute(update_query, (completed, task_id))
 
             self.conn.commit()
+            self.changed = False  # Reset change tracking
             messagebox.showinfo("Save Changes", "Changes saved successfully.")
         except Exception as e:
             messagebox.showerror("Failed", f"Error saving changes: {e}")
@@ -110,7 +125,7 @@ class TaskManager:
 
     def add_new_task(self):
         try:
-            new_task = self.task_entry.get()
+            new_task = self.task.get()
             date_selected = self.calendar.get_date()
 
             # Insert new task into database
@@ -119,46 +134,53 @@ class TaskManager:
             self.cursor.execute(add_new_task_query, data_to_insert)
 
             self.conn.commit()
+
             self.update_task_list(date_selected)
+            self.changed = True  # Mark that a change has occurred after adding a task
+            
+            self.clear_input()
         except Exception as e:
             messagebox.showerror("Failed", f"Data not saved because: {e}")
             self.conn.rollback()
 
     def export_to_excel(self):
         try:
+            # Lấy ngày hiện tại từ Calendar
             selected_date = self.calendar.get_date()
 
-            # Convert selected_date to datetime object
+            # Chuyển đổi selected_date thành định dạng `yyyy-mm-dd`
             selected_date_dt = datetime.strptime(selected_date, "%d/%m/%y")
 
-            # Create the first and last date of the selected month
+            # Tạo ngày đầu tiên và cuối cùng của tháng
             start_date = selected_date_dt.replace(day=1).strftime("%Y-%m-%d")
-            end_date = (selected_date_dt.replace(day=28) + pd.DateOffset(days=4)).replace(day=1).strftime("%Y-%m-%d")
+            end_date = selected_date_dt.replace(day=28).strftime("%Y-%m-%d")
 
-            # Query tasks for the selected month
+            # Truy vấn tất cả các công việc trong tháng đã chọn
             self.cursor.execute(
                 "SELECT task, completed, date FROM tasks WHERE date BETWEEN %s AND %s",
                 (start_date, end_date)
             )
             results = self.cursor.fetchall()
 
+            # Xuất ra file Excel
             if results:
                 df = pd.DataFrame(results, columns=["Task", "Completed", "Date"])
-
-                # Open the file save dialog
-                file_path = filedialog.asksaveasfilename(defaultextension=".xlsx",
-                                                         filetypes=[("Excel files", "*.xlsx"), ("All files", "*.*")],
-                                                         title="Choose where to save the file",
-                                                         initialfile=f"tasks_{selected_date_dt.year}_{selected_date_dt.month}.xlsx")
-                if file_path:  # If the user did not cancel
-                    # Export to Excel
-                    df.to_excel(file_path, index=True)
-                    messagebox.showinfo("Export File", "Data has been successfully exported to Excel!")
-                else:
-                    messagebox.showwarning("Cancelled", "You cancelled the file save.")
-
             else:
                 messagebox.showinfo("No Tasks", "No tasks found for the selected month.")
+
+            # Mở hộp thoại lưu tệp để chọn đường dẫn lưu
+            file_path = filedialog.asksaveasfilename(defaultextension= ".xlsx",
+                                                     filetypes=[("Excel files", "*.xlsx"), ("All files", "*.*")],
+                                                     title="Chọn nơi lưu file",
+                                                     initialfile=f"tasks_{selected_date_dt.year}_{selected_date_dt.month}.xlsx"
+                                                     )
+            if file_path:  # Nếu người dùng không hủy
+                # Xuất ra file Excel
+                df.to_excel(file_path, index=True)
+                messagebox.showinfo(
+                    "Done", "The Excel file has been successfully exported")
+            else:
+                messagebox.showwarning("Cancel", "You have canceled saving the file.")
 
         except Exception as e:
             messagebox.showerror("Export Failed", f"Error exporting to Excel: {e}")
@@ -167,7 +189,16 @@ class TaskManager:
         messagebox.showinfo("Info", "GUI made by Tran Van Hieu and Nguyen Lien Nhi")
 
     def quit_app(self):
-        root.destroy()
+        if self.changed:  # Nếu có thay đổi chưa lưu
+            answer = messagebox.askyesno("Confirm", "You have unsaved changes. Do you want to exit?")
+            if answer:
+                self.root.destroy()
+        else:
+            self.root.destroy()
+
+
+    def clear_input(self):
+        self.task.set("")
 
 
 if __name__ == "__main__":
