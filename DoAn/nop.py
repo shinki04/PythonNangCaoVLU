@@ -37,20 +37,27 @@ class TaskManager:
         self.calendar.pack(expand=True)
         self.calendar.bind("<<CalendarSelected>>", self.calendar_date_changed)
 
+
+
         task_list = ttk.LabelFrame(self.root,height=60)
         task_list.grid(column=3, row=0, padx=50 ,pady=20)
-
+        
+        
+        
         # Task Entry and Buttons
-        Label(task_list, text="Task:").grid(row=1, column=0,padx=20 , pady=20)
+        Label(task_list, text="Task:").grid(row=0, column=0,padx=20 , pady=20)
         self.task = tk.StringVar()
         self.task_entry = Entry(task_list, textvariable=self.task)
-        self.task_entry.grid(row=1, column=1)
-
+        self.task_entry.grid(row=0, column=1)
+                # Button "Today" to go back to the current day
+        self.today_button = Button(task_list, text="Today", command=self.go_to_today)
+        self.today_button.grid(row=1, column=0, padx=20, pady=10)
+        
         self.add_button = Button(task_list, text="Add Task", command=self.add_new_task)
         self.add_button.grid(row=2, column=0)
 
         self.save_button = Button(task_list, text="Save Changes", command=self.save_changes)
-        self.save_button.grid(row=2, column=1)
+        self.save_button.grid(row=1, column=1)
 
         # Task List (using Checkbuttons)
         self.task_frame = ttk.LabelFrame(task_list)
@@ -199,7 +206,13 @@ class TaskManager:
 
     def clear_input(self):
         self.task.set("")
-
+        
+    def go_to_today(self):
+        # Set the calendar to the current date
+        now = datetime.now()
+        current_date = now.strftime("%d/%m/%y")
+        self.calendar.selection_set(current_date)  # Set the selected date to today
+        self.update_task_list(current_date)  # Update tasks for today
 
 if __name__ == "__main__":
     root = Tk()
