@@ -109,12 +109,9 @@ class TaskManager:
 
             self.checkbuttons.append((checkbutton, var, task_id))  # Store the id for future reference
 
-            # Bind the checkbutton to the tracking function to detect changes
-            var.trace("w", lambda *args, task_id=task_id: self.on_checkbox_change(task_id))
 
             row += 1  # Move to the next row after each task
-    def on_checkbox_change(self, task_id):
-        self.changed = True  # Mark that a change has occurred
+
 
     def save_changes(self):
         try:
