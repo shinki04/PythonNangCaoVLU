@@ -10,4 +10,4 @@ def hello():
     chuoi = chuoi + ' <b>Xin <i>chào</i> Tân sinh viên năm ' + str(nam) + '!</b> ' 
     return chuoi 
 if __name__ == "__main__": 
-    ungdung.run() 
+    ungdung.run(port=8080) 

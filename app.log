@@ -1,0 +1,5 @@
+2024-11-05 16:43:20,749 ; DEBUG ; debug message - X module
+2024-11-05 16:43:20,749 ; INFO ; info message - Y module
+2024-11-05 16:43:20,749 ; WARNING ; warn message - Z module
+2024-11-05 16:43:20,749 ; ERROR ; error message
+2024-11-05 16:43:20,749 ; CRITICAL ; critical message
