@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2 import sql
 import pandas as pd
-from tkinter import Tk, Label, Button, Entry, Frame, messagebox, Checkbutton, IntVar, ttk, Menu, filedialog
+from tkinter import Tk, Label, Button, Entry, Frame, messagebox, Checkbutton, IntVar, ttk, Menu, filedialog, simpledialog
 from tkcalendar import Calendar
 from datetime import datetime
 
@@ -24,7 +24,7 @@ class TaskManager:
         self.menu_bar.add_cascade(label="File", menu=file_menu)
         file_menu.add_command(label="Xuất Excel", command=self.export_to_excel)
         file_menu.add_command(label="Exit", command=self.quit_app)        
-        # Help_menux
+        # Help menu
         help_menu = Menu(self.menu_bar, tearoff=0)
         self.menu_bar.add_cascade(label="Help", menu=help_menu)
         help_menu.add_command(label="About", command=self.msg_box_info)
@@ -37,13 +37,16 @@ class TaskManager:
         self.calendar.pack(expand=True)
         self.calendar.bind("<<CalendarSelected>>", self.calendar_date_changed)
 
-        task_list = ttk.LabelFrame(self.root,height=60)
+        # Button "Today" to go back to the current day
+        self.today_button = Button(self.root, text="Today", command=self.go_to_today)
+        self.today_button.grid(row=1, column=0, padx=20, pady=10)
+
+        task_list = ttk.LabelFrame(self.root)
         task_list.grid(column=3, row=0, padx=50 ,pady=20)
 
         # Task Entry and Buttons
         Label(task_list, text="Task:").grid(row=1, column=0,padx=20 , pady=20)
-        self.task = tk.StringVar()
-        self.task_entry = Entry(task_list, textvariable=self.task)
+        self.task_entry = Entry(task_list)
         self.task_entry.grid(row=1, column=1)
 
         self.add_button = Button(task_list, text="Add Task", command=self.add_new_task)
@@ -77,21 +80,29 @@ class TaskManager:
         self.update_task_list(date_selected)
 
     def update_task_list(self, date):
-        # Clear previous checkbuttons by destroying them
+        # Clear previous widgets
         for widget in self.task_frame.winfo_children():
             widget.destroy()
 
-        # Truy vấn các task cho ngày được chọn
+        # Query tasks for the selected date
         query = "SELECT id, task, completed FROM tasks WHERE date = %s"
         self.cursor.execute(query, (date,))
         results = self.cursor.fetchall()
 
-        # Tạo checkbutton mới cho mỗi task
+        # Create checkbuttons for each task
         self.checkbuttons = []  # Clear the checkbuttons list before adding new ones
         for task_id, task, completed in results:
             var = IntVar(value=1 if completed == 'YES' else 0)
             checkbutton = Checkbutton(self.task_frame, text=task, variable=var)
             checkbutton.grid(sticky="w")
+
+            # Add Edit and Delete buttons
+            edit_button = Button(self.task_frame, text="Edit", command=lambda task_id=task_id, task=task: self.edit_task(task_id, task))
+            edit_button.grid(sticky="w")
+            
+            delete_button = Button(self.task_frame, text="Delete", command=lambda task_id=task_id: self.delete_task(task_id))
+            delete_button.grid(sticky="w")
+
             self.checkbuttons.append((checkbutton, var, task_id))  # Store the id for future reference
 
             # Bind the checkbutton to the tracking function to detect changes
@@ -125,7 +136,7 @@ class TaskManager:
 
     def add_new_task(self):
         try:
-            new_task = self.task.get()
+            new_task = self.task_entry.get()
             date_selected = self.calendar.get_date()
 
             # Insert new task into database
@@ -137,12 +148,47 @@ class TaskManager:
 
             self.update_task_list(date_selected)
             self.changed = True  # Mark that a change has occurred after adding a task
-            
-            self.clear_input()
         except Exception as e:
             messagebox.showerror("Failed", f"Data not saved because: {e}")
             self.conn.rollback()
 
+    def edit_task(self, task_id, current_task):
+        new_task = simpledialog.askstring("Edit Task", "Enter new task name:", initialvalue=current_task)
+        if new_task:
+            try:
+                # Update task in the database
+                update_query = sql.SQL("UPDATE tasks SET task = %s WHERE id = %s")
+                self.cursor.execute(update_query, (new_task, task_id))
+                self.conn.commit()
+                self.update_task_list(self.calendar.get_date())  # Refresh task list
+                self.changed = True  # Mark that a change has occurred after editing
+                messagebox.showinfo("Edit Task", "Task updated successfully.")
+            except Exception as e:
+                messagebox.showerror("Error", f"Error updating task: {e}")
+                self.conn.rollback()
+
+    def delete_task(self, task_id):
+        confirm = messagebox.askyesno("Delete Task", "Are you sure you want to delete this task?")
+        if confirm:
+            try:
+                # Delete task from the database
+                delete_query = sql.SQL("DELETE FROM tasks WHERE id = %s")
+                self.cursor.execute(delete_query, (task_id,))
+                self.conn.commit()
+                self.update_task_list(self.calendar.get_date())  # Refresh task list
+                self.changed = True  # Mark that a change has occurred after deleting
+                messagebox.showinfo("Delete Task", "Task deleted successfully.")
+            except Exception as e:
+                messagebox.showerror("Error", f"Error deleting task: {e}")
+                self.conn.rollback()
+
+    def go_to_today(self):
+        # Set the calendar to the current date
+        now = datetime.now()
+        current_date = now.strftime("%d/%m/%y")
+        self.calendar.selection_set(current_date)  # Set the selected date to today
+        self.update_task_list(current_date)  # Update tasks for today
+        
     def export_to_excel(self):
         try:
             # Lấy ngày hiện tại từ Calendar
@@ -199,8 +245,7 @@ class TaskManager:
 
     def clear_input(self):
         self.task.set("")
-
-
+        
 if __name__ == "__main__":
     root = Tk()
     app = TaskManager(root)

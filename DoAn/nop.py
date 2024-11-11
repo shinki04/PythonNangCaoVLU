@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2 import sql
 import pandas as pd
-from tkinter import Tk, Label, Button, Entry, Frame, messagebox, Checkbutton, IntVar, ttk, Menu, filedialog
+from tkinter import Tk, Label, Button, Entry, Frame, messagebox, Checkbutton, IntVar, ttk, Menu, filedialog, simpledialog
 from tkcalendar import Calendar
 from datetime import datetime
 
@@ -60,7 +60,7 @@ class TaskManager:
         self.save_button.grid(row=1, column=1)
 
         # Task List (using Checkbuttons)
-        self.task_frame = ttk.LabelFrame(task_list)
+        self.task_frame = ttk.LabelFrame(task_list,text="To do list")
         self.task_frame.grid(row=3, column=0, columnspan=3 , padx=20 , pady=20)
 
         # Initialize selected date and populate tasks
@@ -82,28 +82,37 @@ class TaskManager:
     def calendar_date_changed(self, event=None):
         date_selected = self.calendar.get_date()
         self.update_task_list(date_selected)
-
     def update_task_list(self, date):
-        # Clear previous checkbuttons by destroying them
+        # Clear previous widgets
         for widget in self.task_frame.winfo_children():
             widget.destroy()
 
-        # Truy vấn các task cho ngày được chọn
+        # Query tasks for the selected date
         query = "SELECT id, task, completed FROM tasks WHERE date = %s"
         self.cursor.execute(query, (date,))
         results = self.cursor.fetchall()
 
-        # Tạo checkbutton mới cho mỗi task
+        # Create checkbuttons for each task
         self.checkbuttons = []  # Clear the checkbuttons list before adding new ones
+        row = 0  # Start placing widgets in the first row
         for task_id, task, completed in results:
             var = IntVar(value=1 if completed == 'YES' else 0)
             checkbutton = Checkbutton(self.task_frame, text=task, variable=var)
-            checkbutton.grid(sticky="w")
+            checkbutton.grid(row=row, column=0, sticky="w")
+
+            # Add Edit and Delete buttons next to each task
+            edit_button = Button(self.task_frame, text="Edit", command=lambda task_id=task_id, task=task: self.edit_task(task_id, task))
+            edit_button.grid(row=row, column=1, padx=5)
+
+            delete_button = Button(self.task_frame, text="Delete", command=lambda task_id=task_id: self.delete_task(task_id))
+            delete_button.grid(row=row, column=2, padx=5)
+
             self.checkbuttons.append((checkbutton, var, task_id))  # Store the id for future reference
 
             # Bind the checkbutton to the tracking function to detect changes
             var.trace("w", lambda *args, task_id=task_id: self.on_checkbox_change(task_id))
 
+            row += 1  # Move to the next row after each task
     def on_checkbox_change(self, task_id):
         self.changed = True  # Mark that a change has occurred
 
@@ -191,6 +200,40 @@ class TaskManager:
 
         except Exception as e:
             messagebox.showerror("Export Failed", f"Error exporting to Excel: {e}")
+
+
+    def edit_task(self, task_id, current_task):
+        new_task = simpledialog.askstring("Edit Task", "Enter new task name:", initialvalue=current_task)
+        if new_task:
+            try:
+                # Update task in the database
+                update_query = sql.SQL("UPDATE tasks SET task = %s WHERE id = %s")
+                self.cursor.execute(update_query, (new_task, task_id))
+                self.conn.commit()
+                self.update_task_list(self.calendar.get_date())  # Refresh task list
+                self.changed = True  # Mark that a change has occurred after editing
+                messagebox.showinfo("Edit Task", "Task updated successfully.")
+            except Exception as e:
+                messagebox.showerror("Error", f"Error updating task: {e}")
+                self.conn.rollback()
+
+    def delete_task(self, task_id):
+        confirm = messagebox.askyesno("Delete Task", "Are you sure you want to delete this task?")
+        if confirm:
+            try:
+                # Delete task from the database
+                delete_query = sql.SQL("DELETE FROM tasks WHERE id = %s")
+                self.cursor.execute(delete_query, (task_id,))
+                self.conn.commit()
+                self.update_task_list(self.calendar.get_date())  # Refresh task list
+                self.changed = True  # Mark that a change has occurred after deleting
+                messagebox.showinfo("Delete Task", "Task deleted successfully.")
+            except Exception as e:
+                messagebox.showerror("Error", f"Error deleting task: {e}")
+                self.conn.rollback()
+
+
+
 
     def msg_box_info(self):
         messagebox.showinfo("Info", "GUI made by Tran Van Hieu and Nguyen Lien Nhi")
