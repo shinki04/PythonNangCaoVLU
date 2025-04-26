@@ -8,6 +8,7 @@ win.title("Python GUI")
 
 #* Start Col 0
 
+
 a_label = ttk.Label(win,text="Enter a name")    
 a_label.grid(column=0,row=0)
 name = tk.StringVar()
