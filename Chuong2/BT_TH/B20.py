@@ -75,6 +75,7 @@ def click_me():
     action.configure(text='Hello ' + name.get() + ' ' +  number_chosen.get())
 
 
+
 # Adding a button
 action = ttk.Button(mighty, text="Click Me!", command=click_me)  
 action.grid(column=2, row=1)
